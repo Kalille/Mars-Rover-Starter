@@ -32,13 +32,28 @@ describe("Rover class", function() {
     let command = new Command("STATUS_CHECK");
     let message = new Message("testing check status command", [command])
     let response = rover4.receiveMessage(message);
-    expect(response).toEqual({message: "testing check status command", results: [{ completed: true, roverStatus: { mode: 'NORMAL', generatorWatts: 110, position: 12345 } }]})
+    let expectedStatus = {
+      mode: 'NORMAL',
+      generatorWatts: 110,
+      position: 12345
+  };
+  let expectedResponse = {
+    message: "testing check status command",
+    results: [
+        {
+            completed: true,
+            roverStatus: expectedStatus
+        }
+    ]
+};
+    expect(response).toEqual(expectedResponse)
    });
    it("responds correctly to the mode change command", function(){
     let rover5 = new Rover(23456);
     let command = new Command("MODE_CHANGE", "LOW_POWER");
     let message = new Message("testing mode change", [command])
     let response = rover5.receiveMessage(message)
+    
     expect(response).toEqual({
       message: "testing mode change",
       results: [{

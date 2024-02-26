@@ -17,12 +17,14 @@ class Rover {
          if (command.commandType === 'STATUS_CHECK') {
             result = { 
                completed: true, 
-               roverStatus: { 
-                  mode: this.mode, 
-                  position: this.position, 
-                  generatorWatts: this.generatorWatts 
-               } 
-            };
+               roverStatus:
+                  { 
+                     mode: this.mode, 
+                     position: this.position, 
+                     generatorWatts: this.generatorWatts 
+                  } 
+               
+            }
          } else if (command.commandType === 'MODE_CHANGE') {
             this.mode = command.value;
             result = { completed: true };
@@ -36,12 +38,14 @@ class Rover {
          } else {
             result = { completed: false, message: 'Unknown command type' };
          }
-   
+        
          results.push(result);
+      
+        
       }
       results.forEach(result => {
          if (result.roverStatus) {
-             result.roverStatus = JSON.stringify(result.roverStatus);
+             result.roverStatus = JSON.parse(JSON.stringify(result.roverStatus));
          }
      });
 
@@ -61,5 +65,6 @@ let commands = [
 ];
 let message = new Message('TA power', commands);
 let response = rover.receiveMessage(message);
-console.log(response)
+// console.log(response)
+console.log(JSON.stringify(response, null, 2));
 module.exports = Rover;
